@@ -1,0 +1,189 @@
+---
+form:
+- name: Email
+  field_type: email
+  description: Type your email here
+  required: true
+include_default_options: true
+options:
+  basics:
+    logo_image:
+      hint: An image for your logo that will replace your site title.
+      editor: Image
+    background_image:
+      hint: The background image for your page. Images are scaled to fit.  An image
+        above 1700 pixels in width will cover 95% of the display sizes.
+      editor: Image
+      default: "//d1y0v6ricksqp.cloudfront.net/images/backgrounds/pictures/nature_grainfielddetail_small.jpg"
+    background_layout:
+      hint: Center will stretch your background image, tile will repeat it, and center
+        will center it on the page.
+      editor: Choice
+      default: Center
+      choices:
+      - Center
+      - Tile
+      - Horizontal
+      - Vertical
+      - None
+    background_blur:
+      hint: Adds a blur effect to your background image.
+      editor: tf
+      default: false
+    page_layout:
+      hint: "Where should the page content live. \n"
+      editor: Choice
+      default: Center
+      choices:
+      - Center
+      - Left
+      - Right
+    3D_button:
+      hint: Choose between a flat button or a 3D button.
+      editor: tf
+      default: true
+    label_text_alignment:
+      hint: Where you want to align your form's text.
+      editor: Choice
+      default: Left
+      choices:
+      - Left
+      - Center
+  show_sections:
+    show_title_tagline:
+      hint: Display one line description of your business.
+      editor: tf
+      default: true
+    show_text_below_form:
+      hint: Add a text area below the form.
+      editor: tf
+      default: false
+    show_box_color:
+      hint: Toggle box background color
+      editor: tf
+      default: true
+  fonts:
+    title_font:
+      hint: Customize your title fonts.
+      editor: font
+      default: Nunito
+    headline_font:
+      hint: Customize your body fonts.
+      editor: font
+      default: Source+Sans+Pro
+    body_font:
+      hint: Customize your body fonts.
+      editor: font
+      default: Source+Sans+Pro
+    text_align:
+      hint: Text align for text content.
+      editor: Choice
+      default: Left
+      choices:
+      - Center
+      - Left
+      - Right
+  colors:
+    background_color:
+      hint: The color of your body background.
+      editor: color
+      default: "#5c94a3"
+    thank_you_bg_color:
+      hint: The color of the background of the thank you message.
+      editor: color
+      default: "#ffffff"
+    box_background_color:
+      hint: The color of your box background.
+      editor: color
+      default: "#f5f5f5"
+    title_color:
+      hint: The color used for links within your landing page.
+      editor: color
+      default: "#f07660"
+    text_color:
+      hint: The primary color used for text on the page.
+      editor: color
+      default: "#454545"
+    link_color:
+      hint: The color used for links within your landing page.
+      editor: color
+      default: "#656565"
+    button_color:
+      hint: The color of buttons on your landing page.
+      editor: color
+      default: "#5c94a3"
+    social_links_color:
+      hint: The background color of social link buttons on your landing page.
+      editor: color
+      default: "#5c94a3"
+  signup:
+    show_labels:
+      hint: Should the form fields have labels?
+      editor: tf
+      default: false
+    label_text_alignment:
+      hint: Where to align your form's text.
+      editor: Choice
+      default: Center
+      choices:
+      - Left
+      - Center
+    button_text:
+      hint: Text of the button on the form
+      editor: string
+      default: Notify Me
+    thank_you_message:
+      hint: This is what someone sees after they enter their email. Thank them and
+        encourage them to share.
+      editor: html
+      default: "<h4><strong>Thanks for your interest!  It's good to feel loved.</strong></h4>
+        <p>Share this link to influence others and get credit!</p>"
+  footer:
+    privacy_link_text:
+      editor: string
+      default: Privacy
+      hint: The name of the link to your privacy page.
+    facebook_url:
+      hint: The full link to your Facebook page.
+      editor: string
+    twitter_url:
+      hint: The full link to your Twitter page.
+      editor: string
+    pinterest_url:
+      hint: The full link to your Pinterest page.
+      editor: string
+    googleplus_url:
+      hint: The full link to your Google Plus page.
+      editor: string
+    instagram_url:
+      hint: The full link to your Instagram page.
+      editor: string
+    linkedin_url:
+      hint: The full link to your LinkedIn page.
+      editor: string
+    youtube_url:
+      hint: The full link to your youtube channel.
+      editor: string
+    blog_url:
+      hint: The full link to your blog.
+      editor: string
+    email_address:
+      hint: The email address to contact you by email.
+      editor: string
+  inline:
+    title:
+      hint: The title of your landing page that's shown unless you use a logo image.
+      editor: string
+      default: Set page title in editor under settings.
+    tagline:
+      hint: A one line description of your business.
+      editor: string
+      default: '<h3>Getting you more leads...<br>...and converting like crazy!</h3>'
+    copyright:
+      hint: Your copyright.
+      default: "&copy; 2014"
+      editor: string
+    after_form:
+      hint: Some text here goes after the form.
+      editor: Html
+      default: '<p style="text-align: center;">We rest our case.</p> '

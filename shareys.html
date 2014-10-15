@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="{% jquery 1.10.2 %}"></script>
+        {% common_header %}
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        {{ content.title_font | load_font}}
+        {{ content.headline_font | load_font}}
+        {{ content.body_font | load_font}}
+
+        <!-- Bootstrap CDN -->
+        <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+        <!-- FontAwesome CDN -->
+        <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+        <!-- Bootstrap Form Validator -->
+        <link href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-validator/0.4.5/css/bootstrapvalidator.min.css" rel="stylesheet">
+
+        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+            <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
+        <style>
+             /*GENERAL STYLES *********************************************
+            **************************************************************/
+            body {
+                font-size: 18px;
+                color: {{content.text_color}};
+                background: {{content.background_color}};
+            }
+
+            body *{
+                -webkit-font-smoothing: antialiased;
+            }
+
+            a {
+                color: {{content.link_color}};
+            }
+
+            a:hover {
+                color: {{content.link_color | darker_color}};
+            }
+
+            h1, h2, h3, h4, .button {
+                {{content.headline_font | font_family}}
+            }
+
+            .text-alignment {
+                {% case content.text_align %}
+                    {% when 'Left' %}
+                        text-align: left;
+                    {% when 'Center' %}
+                        text-align: center;
+                    {% when 'Right' %}
+                        text-align: right;
+                {% endcase %}
+                text-align: center;
+            }
+
+            .formAlign {
+                {% if content.label_text_alignment == 'Left' %} 
+                    text-align: left;
+                {% else if %}
+                    text-align: center;
+                {% endif %}
+            }
+
+            .col-centered{
+                float: none;
+                margin: 0 auto;
+            }
+
+            {% if content.background_blur %}
+            div.backstretch {
+                -webkit-filter: blur(4px);
+                -moz-filter: blur(4px);
+                -o-filter: blur(4px);
+                -ms-filter: blur(4px);
+                filter: blur(4px);
+                margin: -5px !important;
+            }
+            {% endif %}
+
+            {% if content.background_layout == 'Tile' %}
+            .backstretch:before {
+                content: ""; 
+                width: 100%; 
+                height: 100%; 
+                background: url("{{content.background_image}}"); 
+                position: absolute;
+            }
+            {% endif %}
+
+            .btn-lgr {
+                font-size: 25px;
+                line-height: 1;
+                border-radius: 10px;
+                padding: 20px 18px;
+            }
+
+            .btn {
+                transition: all ease-in-out 0.2s;
+                position: relative;
+                outline: medium none;
+                -moz-outline-style: none;
+                top: 0;
+            }
+
+            .btn-kol { 
+                color: {{content.button_color | font_color_from_background : '#FEFEFE', '#444444'}}; 
+                background-color: {{content.button_color}};
+                border-color: {{content.button_color}};                
+            }
+                 
+            .btn-kol:hover, 
+            .btn-kol:focus,
+            .btn-kol:active, 
+            .btn-kol.active, 
+            .open .dropdown-toggle.btn-kol { 
+                color: {{content.button_color | font_color_from_background : '#FEFEFE', '#444444'}};
+                background-color: {{content.button_color | darker_color}};
+                border-color: {{content.button_color | darker_color}};
+            }
+
+            .btn-kol.btn-3d { 
+                -webkit-box-shadow: 0 6px 0 {{content.button_color | darker_color}}, 0 6px 3px rgba(0, 0, 0, 0.4);
+                -moz-box-shadow: 0 6px 0 {{content.button_color | darker_color}}, 0 6px 3px rgba(0, 0, 0, 0.4);
+                box-shadow: 0 6px 0 {{content.button_color | darker_color}}, 0 6px 3px rgba(0, 0, 0, 0.4);
+            } 
+                 
+            .btn-kol.btn-3d:hover, 
+            .btn-kol.btn-3d:focus { 
+                -webkit-box-shadow: 0 6px 0 {{content.button_color | darker_color | darker_color}}, 0 6px 3px rgba(0, 0, 0, 0.4);
+                -moz-box-shadow: 0 6px 0 {{content.button_color | darker_color | darker_color}}, 0 6px 3px rgba(0, 0, 0, 0.4);
+                box-shadow: 0 6px 0 {{content.button_color | darker_color | darker_color}}, 0 6px 3px rgba(0, 0, 0, 0.4);
+            }
+
+            .btn-kol.btn-3d:active, 
+            .btn-kol.btn-3d.active, 
+            .open .dropdown-toggle.btn-kol.btn-3d { 
+                -webkit-box-shadow: none;
+                -moz-box-shadow: none;
+                box-shadow: none;
+            }
+
+             /*STEP 1 *****************************************************
+            **************************************************************/
+
+            .jumbotron-1 {
+                height: 500px;
+                padding-top: 100px;
+            }
+
+             /*STEP 2 *****************************************************
+            **************************************************************/
+            .navbar-default {
+                background-color: #FF6000;
+                min-height: 70px;
+                border-color: #FF6000;
+            }
+
+            #centered-nav .navbar .nav,
+            #centered-nav .navbar .nav > li
+            {
+                float:none;
+                display:inline-block;
+                *display:inline;  ie7 fix 
+                *zoom:1;  hasLayout ie7 trigger 
+                vertical-align: top;
+            }
+
+
+            #centered-nav .navbar-inner {
+                text-align:center;
+            }
+
+            .navbar .brand.hidden-desktop{
+                float:none;
+            }
+
+            .img-overlay {
+                position: relative;
+            }
+
+            .text-overlay {
+                position: absolute;
+                top: 35px;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                color: #fff;
+            }
+
+            .char-overlay {
+                font-family: 'Helvetica';  Your font family 
+                font-weight: bold;
+            }
+
+             Medium Devices, Desktops & Up 
+            @media only screen and (min-width : 992px) {
+
+                .text-overlay {
+                    top: 70px;
+                }
+            }
+        </style>
+
+    </head>
+
+    <body>
+
+        <!-- START TITLE AND TAGLINE CONTENT -->
+        <div id="stepOne" class="jumbotron jumbotron-1">
+            <div class="container">
+                <div class="row text-alignment">
+                    <div class="col-sm-6">
+                        {% if content.logo_image  != '' %}
+                            <img data-mercury="kickimage" data-content-name="logo_image" src="{{content.logo_image}}" alt="{{content.title}}" class="img-responsive" />
+                        {% endif %}
+                        <h1>Get ready for something BIG!</h1>
+                        {% if content.show_title_tagline == true %}
+                            <div class="title tagline description" data-mercury="wysihat" data-content-name="tagline">{{content.tagline}}</div>
+                        {% endif %}
+                    </div> <!-- /end col -->
+                </div> <!-- /end row -->
+            </div> <!-- /end container -->
+        </div> <!-- /end jumbotron -->
+        <!-- /END TITLE AND TAGLINE CONTENT -->
+
+        <div id="stepOne" class="container">
+            <!-- START STEP 1 CONTENT -->
+            <div class="row text-alignment">
+                <div class="col-sm-10 col-sm-offset-1 text-alignment">
+                    <i class="fa fa-key fa-3x"></i>
+                    <h3>BE THE FIRST TO KNOW</h3>
+                </div> <!-- /end col -->
+            </div> <!-- /end row -->
+            <!-- /END STEP 1 CONTENT -->
+
+            <br>
+            
+            <!-- START STEP 1 SIGNUP FORM -->
+            <div class="row text-alignment">
+                <div class="col-sm-6 col-sm-offset-3 formAlign">
+                    {% form %}
+                        {% for element in form_elements %}
+                            {% case element.field_type %}                            
+                            {% when 'email' %}
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            {% if content.show_labels == true %}
+                                                <label for="{{element.name}}">{{element.display_text}} {% if {{element.required_class}}%}*{% endif%}</label>
+                                            {% endif %}
+                                            <input class="{{element.required_class}} form-control input-lg formAlign" id="{{element.name}}" name="email" placeholder="{{element.placeholder}}" type="email" data-label-text="{{element.label}}" />
+                                        </div>
+                                    </div>
+                                </div>
+                            {% when 'text' %}
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            {% if content.show_labels == true %}
+                                                <label for="{{element.name}}">{{element.display_text}} {% if {{element.required_class}}%}*{% endif%}</label>
+                                            {% endif %}
+                                            <input class="{{element.required_class}} form-control input-lg formAlign" id="{{element.name}}" name="text" placeholder="{{element.placeholder}}" type="text" data-label-text="{{element.label}}" />
+                                        </div>
+                                    </div>
+                                </div>
+                            {% when 'textarea' %}
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            {% if content.show_labels == true %}
+                                                <label for="{{element.name}}">{{element.display_text}} {% if {{element.required_class}}%}*{% endif%}</label>
+                                            {% endif %}
+                                            <textarea id="{{element.name}}" class="{{element.required_class}} form-control input-lg formAlign" name="textarea" rows="3" placeholder="{{element.placeholder}}" data-label-text="{{element.label}}"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% when 'choice' %}
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-sm-12 selectContainer">
+                                            {% if content.show_labels == true %}
+                                                <label for="{{element.name}}">{{element.display_text}} {% if {{element.required_class}}%}*{% endif%}</label>
+                                            {% endif %}
+                                            <select id="{{element.name}}" name="choice" class="{{element.required_class}} form-control input-lg formAlign" placeholder="{{element.placeholder}}" data-label-text="{{element.label}}">
+                                                <option>{{element.placeholder}}</option>
+                                                {% for choice in element.choices %}
+                                                    <option>{{choice}}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% when 'checkbox' %}
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-sm-12 checkContainer">
+                                            <div class="checkbox">
+                                                <label>
+                                                    <input class="{{element.required_class}}" type="checkbox" id="{{element.name}}" name="checkbox" data-label-text = "{{element.label}}" value="" />{% if content.show_labels == true %}
+                                                        {{element.display_text}} {% if {{element.required_class}}%}*{% endif%}
+                                                    {% else %}
+                                                        {{element.placeholder}}
+                                                    {% endif %}
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endcase %}
+                        {%endfor %}
+                        <button class="submit btn {% if content.3D_button == true %}btn-3d{% endif %} btn-kol btn-lgr btn-block" id="submit_button" name="submit" type="submit">{{content.button_text}}</button>
+                    {% endform %}
+                </div>
+            </div> <!-- /end row -->
+            <!-- /END STEP 1 SIGNUP FORM -->
+        </div> <!-- /end container -->
+
+        <hr>
+
+        <!-- START TOP THANK YOU MESSAGE -->
+        <div id="centered-nav" class="thank-you collapse">
+            <div class="navbar navbar-default navbar-fixed-top">
+                <div class="navbar-inner">
+                    <div class="container">             
+                        <div class="nav-collapse">
+                            <ul class="nav">
+                                <li><h3>Thank you for signing up!</h3></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div> <!-- /end navbar -->
+        </div> <!-- /end centered nav -->
+        <!-- /END TOP THANK YOU MESSAGE -->
+
+        <div class="jumbotron thank-you collapse">
+              <div class="container">
+                <div class="row text-alignment">
+                    
+                    <div class="col-sm-6 col-md-6">
+                        <div class="img-overlay">
+                            
+                            <img class="img-responsive" src="contest.png">
+                            <div class="text-overlay">
+                                <h1>Contests are evolving</h1>    
+                            </div>
+                        </div>
+                    </div> <!-- /end col -->
+                    
+                    <div class="col-sm-6 col-md-5">
+                        <h5>DON'T LEAVE YOUR FRIENDS BEHIND</h5>
+                        <h2>Invite Friends & Earn Product</h2>
+                        <p>Share your unique referral link via email, Facebook, Twitter or Google Plus and earn free goodies for each friends who signs up.</p> 
+                    </div> <!-- /end col -->
+                </div>
+            </div>
+        </div>
+
+        <div class="container-fluid thank-you collapse">
+            
+            <div class="row text-alignment">
+                <div class="col-sm-10 col-sm-offset-1">
+                    <h3>HERE'S HOW IT WORKS:</h3>
+                </div> <!-- /end col -->
+            </div> <!-- /end row -->
+
+            <br>
+
+            <div class="row text-alignment">
+                <div class="col-sm-3">
+                    <h3>FRIENDS JOINED</h3>
+                </div> <!-- /end col -->
+                <div class="col-sm-2">
+                    <span class="fa-stack fa-2x">
+                         <i class="fa fa-circle fa-stack-2x"></i>
+                         <i class="fa fa-inverse fa-stack-1x">3</i>
+                    </span>
+                </div> <!-- /end col -->
+                <div class="col-sm-2">
+                    <span class="fa-stack fa-2x">
+                         <i class="fa fa-circle fa-stack-2x"></i>
+                         <i class="fa fa-inverse fa-stack-1x">5</i>
+                    </span>
+                </div> <!-- /end col -->
+                <div class="col-sm-2">
+                    <span class="fa-stack fa-2x">
+                         <i class="fa fa-circle fa-stack-2x"></i>
+                         <i class="fa fa-inverse fa-stack-1x">10</i>
+                    </span>
+                </div> <!-- /end col -->
+                <div class="col-sm-2">
+                    <span class="fa-stack fa-2x">
+                         <i class="fa fa-circle fa-stack-2x"></i>
+                         <i class="fa fa-inverse fa-stack-1x">15</i>
+                    </span>
+                </div> <!-- /end col -->
+            </div> <!-- /end row -->
+
+            <br>
+            
+            <!-- START PROGRESS BAR -->
+            <div class="row text-alignment">
+                <div class="col-sm-10 col-centered">
+                    <div class="progress">
+                        <div class="progress-bar" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 20%;"></div>
+                    </div>
+                </div> <!-- /end col -->
+            </div> <!-- /end row -->
+            <!-- /END PROGRESS BAR -->
+
+            <div class="row text-alignment">
+                <div class="col-sm-3">
+                    <h3>PRODUCT EARNED</h3>
+                </div> <!-- /end col -->
+
+                <!-- START INCENTIVE #1 -->
+                <div class="col-sm-2">
+                    <p>Something awesome</p>
+                </div> <!-- /end col -->
+                <!-- /END INCENTIVE #1 -->
+                
+                <!-- START INCENTIVE #2 -->
+                <div class="col-sm-2">
+                    <p>Another amazing incentive</p>
+                </div> <!-- /end col -->
+                <!-- /END INCENTIVE #2 -->
+                
+                <!-- START INCENTIVE #3 -->
+                <div class="col-sm-2">
+                    <p>Get this many friends to join</p>
+                </div> <!-- /end col -->
+                <!-- /END INCENTIVE #3 -->
+                
+                <!-- START INCENTIVE #4 -->
+                <div class="col-sm-2">
+                    <p>You must really love us!</p>
+                </div> <!-- /end col -->
+                <!-- /END INCENTIVE #4 -->
+            
+            </div> <!-- /end row -->
+            <br>
+            <div class="row">
+                <div class="col-sm-10 col-sm-offset-1 text-center">
+                    <h3>0 Friends have joined so far</h3>
+                    <p>Remeber to revisit this page to see your progress!</p>
+                </div>
+            </div>
+
+        </div> <!-- /end container -->
+
+        <!-- START FOOTER CONTENT -->
+        <div class="container">
+            <div class="row text-alignment">
+                <div class="col-sm-10 col-sm-offset-1">
+                    <p>&copy; Company 2014</p>
+                </div> <!-- /end col -->
+            </div> <!-- /end row -->
+        </div> <!-- /end container -->
+        <!-- /END FOOTER CONTENT -->
+
+        <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+        <!-- IE10 viewport hack for Surface/desktop Windows 8 bug
+        <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script> -->
+        <script src="https://d2zc23renulrga.cloudfront.net/assets/26643/medlm9fgel80izblh8yd/jquery.backstretch.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-validator/0.4.5/js/bootstrapvalidator.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.3/fastclick.min.js"></script>
+        <script src="{% asset_path js/jquery-libs/zclip/jquery.zclip.min.js %}"></script>
+        <script src="{% kol_submit_response %}"></script>
+        <script src="{% kol_external 2 %}"></script>
+        <script> 
+            jQuery(document).ready(function(){ 
+                new KOLResponse();
+                new KOLValidation();
+            });
+        </script>
+
+        <script>
+            $('#stepOne').bind ('kol:success', function (event, data){
+                $('.signupHide').hide();
+            });
+
+            {% if content.background_layout == 'None' %}
+            {% else %}
+            $(".jumbotron-1").backstretch(
+                ["{{content.background_image}}"],
+                {
+                    {% if content.background_layout == 'Horizontal' %}
+                        centeredX: false,
+                    {% endif %}
+                    {% if content.background_layout == 'Vertical' %}
+                        centeredY: false
+                    {% endif %}
+                });
+            {% endif %}
+        </script>
+
+    </body>
+
+</html>
